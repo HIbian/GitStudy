@@ -103,14 +103,42 @@ function homework5(){
 	var userPsw = document.getElementById("w5_userPsw").value;
 	var phone = document.getElementById("w5_phone").value;
 	var sfz = document.getElementById("w5_sfz").value;
-	alert(regEmail(emailtxt));
+	if(!regEmail(emailtxt)){
+		alert("邮箱格式不正确");
+	}
+	if(!reguserName(userName)){
+		alert("用户名格式不正确");
+	}
+	if(!regpsw(userPsw)){
+		alert("密码格式不正确");
+	}
+	if(!regphone(phone)){
+		alert("手机号码格式不正确");
+	}
+	if(!regsfz(sfz)){
+		alert("身份证码格式不正确");
+	}
 }
 function regEmail(email){
 	var regemail = new RegExp(/^([0-9a-zA-Z_]{1,})@[0-9a-zA-Z_]{1,}.([a-zA-Z]{1,})$/);
 	return regemail.test(email);
 }
-
-
+function reguserName(userName){
+	var reguser = new RegExp(/^([A-Z])([0-9_]{4,7})$/);
+	return reguser.test(userName);
+}
+function regpsw(psw){
+	var regpsw = new RegExp(/.{1,}/);
+	return regpsw.test(psw);
+}
+function regphone(phone){
+	var reg = new RegExp(/[0-9]{11}/);
+	return reg.test(phone);
+}
+function regsfz(sfz){
+	var reg = new RegExp(/[0-9]{17}[0-9Xx]/);
+	return reg.test(sfz);
+}
 
 
 
