@@ -106,12 +106,105 @@ var sfzReg = new RegExp(/^([0-9]{17})([0-9xX])$/);
 var sfzStr="51090219970128933x";
 console.log(sfzReg.test(sfzStr));
 
+//查找指定字符串
+var getreg = new RegExp(/ab+/g);//正则表达式最后加个g，表示作用于全局
+var str = "ssabbssabbb2222";
+console.log(str.match(getreg,str));//可以全局匹配，返回匹配的字符串数组
+console.log(str.replace(getreg,"替换"));//可以全局替换，返回替换后的字符串
+console.log(str.search(getreg));//返回匹配字符串的开始下标
+console.log(str.split(getreg));//返回分割后的字符串数组，最后的字符串匹配的话，会有一个长度为0的字符串
 
+console.log(getreg.test(str));//判断是否匹配
+var k = getreg.exec(str)
+console.log(k.length);
+console.log(k[0]);
 
+//全选反选
+function quanxuan(){
+	var inputbox = document.getElementsByName("hobbit");
+	for (i=0;i<inputbox.length;i++) {
+		inputbox[i].checked = true;
+	}
+}
+function fanxuan(){
+	var inputbox = document.getElementsByName("hobbit");
+	for (i=0;i<inputbox.length;i++) {
+		inputbox[i].checked = false;
+	}
+}
+function xuan(){
+	var inputbox = document.getElementsByName("hobbit");
+	var now = document.getElementById("che");
+	for (i=0;i<inputbox.length;i++) {
+		inputbox[i].checked = now.checked;
+	}
+}
 
+function big(){
+	var big = document.getElementById("p1");
+	big.style.fontSize="18px";
+}
+function middle(){
+	var big = document.getElementById("p1");
+	big.style.fontSize="16px";
+}
+function small(){
+	var big = document.getElementById("p1");
+	big.style.fontSize="14px";
+}
 
+function changecolor(){
+	var ps = document.getElementById("txt");
+	ps.style.color="rgb(122,756,124)";
+}
+function changewidth(){
+	var ps = document.getElementById("txt");
+	ps.style.display="inline-block";
+	ps.style.height="300px";
+	ps.style.weight="300px";
+//	ps.style="none";
+}
+function hidetext(){
+	var ps = document.getElementById("txt");
+	ps.style.display="none";
+}
+function showtext(){
+	var ps = document.getElementById("txt");
+	ps.style.display="inline-block";
+}
+function queXiao(){
+	var ps = document.getElementById("txt");
+	ps.style.color="#000000";
+	ps.style.display="block";
+	ps.style.height="auto";
+	ps.style.weight="auto";
+}
 
+//实现函数 isInteger(x) 来判断 x 是否是整数
+function isoushu(){
+	var num = document.getElementById("inputshu").value;
+	if(isInteger(num)){
+		alert("是整数");
+	}else{
+		alert("不是整数");
+	}
+}
+function isInteger(x){
+	var regnum = new RegExp(/^(0|[1-9][0-9]*|-[1-9][0-9]*)$/);
+	return regnum.test(x);
+}
 
-
-
-
+//写一个少于 80 字符的函数，判断一个字符串是不是回文字符串
+function fanzhuan(){
+	var getstr = document.getElementById("fanzhuanbox").value;
+	var bool = true;
+//	alert(getstr);
+	for (i=0;i<getstr.length/2;i++) {
+		if(getstr[i]==getstr[getstr.length-1-i]){
+			continue;
+		}
+		bool = false;
+		break;
+	}
+	alert(bool);
+}

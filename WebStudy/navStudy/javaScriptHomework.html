@@ -11,7 +11,7 @@
 		<input type="text" name="w4" id="w4" value="" /><input type="button" name="w4_btn" id="w4_btn" value="计算分数" onclick="homework4()"/>
 		<!------------------------------------------------------------------------->
 		<hr />
-		邮&nbsp;&nbsp;&nbsp;箱：<input type="text" id="w5_email" value="" />
+		邮&nbsp;&nbsp;&nbsp;箱：<input type="text" id="w5_email" value="" onblur="regEmail(this.value)"/><span id="emaillog" style="font-size: 12px;"></span>
 		<br />
 		用户名：<input type="text" id="w5_userName" value="" />
 		<br />
@@ -22,6 +22,12 @@
 		身份证：<input type="text" id="w5_sfz" value="" />
 		<br />
 		<input type="button" id="w5_btn" value="提交" onclick="homework5()"/>
+		<!------------------------------------------------------------------------->
+		<hr />
+		性别：<input type="text" id="w6_sex" value="" /><br />
+		身高：<input type="text" id="w6_height" value="" /><br />
+		体重：<input type="text" id="w6_weight" value="" /><br />
+		<input type="button" id="w5_btn" value="提交" onclick="homework6()"/>
 		
 		<script src="js/javaSriptHomework.js" type="text/javascript" charset="utf-8"></script>
 	</body>

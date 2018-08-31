@@ -13,10 +13,46 @@
 			<li><input type="button" value="输入窗口" onclick="promptWindow()"/></li>
 		</ul>
 		
-		
-		
-		
-		
+		<div id="test1">
+			<input type="checkbox" name="hobbit" value="看书"/>看书
+			<input type="checkbox" name="hobbit" value="看电影" />看电影
+			<input type="checkbox" name="hobbit" value="打篮球" />打篮球
+			<input type="checkbox" name="hobbit" value="吃饭" />吃饭
+			<input type="checkbox" name="hobbit" value="睡觉" />睡觉
+			<input type="checkbox" id="che" value="0" onclick="xuan()"/>
+			<input type="button" id="btn_q" value="全选" onclick="quanxuan()"/>
+			<input type="button" id="btn_f" value="反选" onclick="fanxuan()"/>
+		</div>
+		<div>
+			<p id="p1">无形装逼 最为致命</p>
+			<a href="#" id="big" onclick="big()">大</a>
+			<a href="#" id="middle" onclick="middle()">中</a>
+			<a href="#" id="small" onclick="small()">小</a>
+		</div>
+		<div>
+			<div id="txt" style="background-color: gray;">
+				<h5>JavaScript为网页添加动态效果并实现与用户交互的功能。</h5>
+				<p class="cp">111111111111111111111111111111111</p>
+				<p class="cp">222222222222222222222222222222222</p>
+				<p class="cp">333333333333333333333333333333333</p>
+			</div>
+			<form>
+				<!--当点击相应按钮，执行相应操作，为按钮添加相应事件-->
+				<input type="button" value="改变颜色" onClick="changecolor()">
+				<input type="button" value="改变宽高" onClick="changewidth()">
+				<input type="button" value="隐藏内容" onClick="hidetext()">
+				<input type="button" value="显示内容" onClick="showtext()">
+				<input type="button" value="取消设置" onClick="queXiao()">
+			</form>
+		</div>
+		<div id="iszs">
+			<input type="text" id="inputshu">
+			<input type="button" id="isoushu" value="判断是否为整数" onClick="isoushu()">
+		</div>
+		<div id="fanzhaun">
+			<input type="text" id="fanzhuanbox">
+			<input type="button" value="反转" onClick="fanzhuan()">
+		</div>
 		<script src="js/JavaSriptStudy01.js" type="text/javascript" charset="utf-8"></script>
 	</body>
 </html>

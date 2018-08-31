@@ -120,19 +120,28 @@ function homework5(){
 	}
 }
 function regEmail(email){
-	var regemail = new RegExp(/^([0-9a-zA-Z_]{1,})@[0-9a-zA-Z_]{1,}.([a-zA-Z]{1,})$/);
+	var regemail = new RegExp(/^([\w_]+)@[0-9A-z_]+.([A-z]+)$/);//\w包括字母和数字
+//	alert(regemail.test(email));
+	var ele = document.getElementById("emaillog");
+	if(regemail.test(email)){
+		ele.innerText="正确";
+		ele.style.color="green";
+	}else{
+		ele.innerText="不正确";
+		ele.style.color="red";
+	}
 	return regemail.test(email);
 }
 function reguserName(userName){
 	var reguser = new RegExp(/^([A-Z])([0-9_]{4,7})$/);
 	return reguser.test(userName);
 }
-function regpsw(psw){
+function regpsw(psw){ 
 	var regpsw = new RegExp(/.{1,}/);
 	return regpsw.test(psw);
 }
 function regphone(phone){
-	var reg = new RegExp(/[0-9]{11}/);
+	var reg = new RegExp(/^((13[0-9])|(14[5,7])|(15[0-3,5-9])|(17[0,3,5-8])|(18[0-9])|166|198|199|(147))\d{8}$/);
 	return reg.test(phone);
 }
 function regsfz(sfz){
@@ -140,8 +149,39 @@ function regsfz(sfz){
 	return reg.test(sfz);
 }
 
-
-
+//6.	
+//请输入性别：
+//请输入身高：
+//请输入体重：	
+//男性标准体重=（身高cm－80）×70﹪
+//女性标准体重=（身高cm－70）×60﹪
+//评估标准
+//	标准体重正负10%为正常体重
+//	标准体重正负10%-20%为体重过重或过轻 
+//	标准体重正负20%以上为肥胖或体重不足
+//
+//		轻度肥胖:超过标准体重 20% -30%
+//		中度肥胖:超过标准体重 40%-50%
+//		重度肥胖:超过标准体重 50%以上
+//要求:
+//	1.判断文本框是否为空 如果为空 需要提示
+//	2.弹出窗口显示评估结果 输出 性别 身高 体重 标准体重 
+//	评估结果 
+//		轻:输出体重偏轻 多吃点 
+//		正常:继续保持
+//		重:轻度/中度/重度肥胖 体重过重 多运动
+function homework6(){
+	var sex = document.getElementById("w6_sex").value;
+	var height = document.getElementById("w6_height").value;
+	var weight = document.getElementById("w6_weight").value;
+	switch(sex){
+		case "男":
+		break;
+		case "女":
+		break;
+		default:
+	}
+}
 
 
 
