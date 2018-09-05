@@ -1,0 +1,37 @@
+-- 有3 个表（15 分钟）：【基础】
+-- Student 学生表(学号，姓名，性别，年龄，组织部门)
+-- Course 课程表(编号，课程名称)
+-- Sc 选课表(学号，课程编号，成绩)
+-- 表结构如下：
+-- 1）写一个SQL 语句，查询选修了’计算机原理’的学生学号和姓名（3 分钟）
+-- 2）写一个SQL 语句，查询’周星驰’同学选修了的课程名字（3 分钟）
+-- 3）写一个SQL 语句，查询选修了5 门课程的学生学号和姓名（9 分钟）
+SELECT sid,sname FROM stu WHERE stu.sid in
+ (SELECT sid FROM sc WHERE sc.cid in
+(SELECT cid FROM course WHERE cname='计算机原理'));
+
+SELECT cname FROM course WHERE cid in
+(SELECT cid FROM sc WHERE sid in
+(SELECT sid FROM stu WHERE sname='陈暖'));
+
+SELECT sid,sname FROM stu WHERE sid in
+(SELECT sid FROM sc GROUP BY sid HAVING COUNT(sid)>=5);
+
+
+CREATE TABLE stu(
+sid INT PRIMARY KEY,
+sname VARCHAR(16),
+sex VARCHAR(4),
+age INT,
+depart VARCHAR(16)
+);
+CREATE TABLE course(
+cid INT PRIMARY KEY,
+cname VARCHAR(16)
+);
+CREATE TABLE sc(
+sid INT,
+cid INT,
+score INT,
+PRIMARY KEY(sid,cid)
+);
