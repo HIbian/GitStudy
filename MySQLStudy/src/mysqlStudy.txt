@@ -1,0 +1,83 @@
+-- 登陆mysql
+-- cmd 输入 mysql -u root -p
+-- 创建数据库
+CREATE DATABASE mydb1;
+-- 查看数据库
+SHOW DATABASES;
+-- 删除数据库
+DROP DATABASE mydb1;
+-- 查看当前使用的数据库
+SELECT DATABASE();
+-- 切换数据库
+USE mydb1;
+
+
+
+
+-- 数据的完整性
+
+-- 1，实体完整性
+-- 主键约束primary key
+-- 添加主键的三种方式
+-- 第一种
+CREATE TABLE testt(
+	id INT PRIMARY KEY,
+	age INT NOT NULL
+);
+-- 第二种
+CREATE TABLE testt(
+	id INT,
+	age INT NOT NULL，
+	PRIMARY KEY(id,age)
+);
+-- 第三种
+CREATE TABLE testtttt(
+	id INT ,
+	age INT NOT NULL
+);
+ALTER TABLE testtttt ADD PRIMARY KEY(id);
+-- 唯一约束unique
+-- 数据唯一，不能为null
+CREATE TABLE testttttttt(
+	id INT PRIMARY KEY,
+	sname VARCHAR(16),
+	classid INT UNIQUE
+);
+-- 自动增长列auto_increment
+CREATE TABLE test_auto_incre(
+	id INT PRIMARY KEY auto_increment,
+	sname VARCHAR(30),
+	classid INT UNIQUE
+);
+
+-- 2，域完整性
+
+-- 非空约束
+CREATE TABLE test_not_null(
+	id INT PRIMARY KEY auto_increment,
+	sname VARCHAR(30) NOT NULL,
+	classid INT UNIQUE
+);
+-- 默认值约束
+CREATE TABLE test_default(
+	id INT PRIMARY KEY auto_increment,
+	sname VARCHAR(30) NOT NULL DEFAULT 'cx',
+	classid INT UNIQUE
+);
+insert test_default values(3,DEFAULT,827);
+
+-- 3，引用完整性（参照完整性）
+-- 外键约束 FOREIGN KEY
+CREATE TABLE student(
+	sid int pirmary key,
+	name varchar(50) not null,
+	sex varchar(10) default '男'
+);
+create table score(
+        id int,
+        score int,
+        sid int , 
+        CONSTRAINT fk_score_sid foreign key(sid) references student(id)
+);
+-- 第二种添加方式
+ALTER TABLE score ADD CONSTRAINT fk_stu_score FOREIGN KEY(sid) REFERENCES stu(id);

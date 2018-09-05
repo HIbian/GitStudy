@@ -47,3 +47,14 @@ function deleteRow_1(thisd) {
 	//			var td = document.getElementById("table_stu");
 	//			td.removeChild(tr);
 }
+function info(){
+	console.log(window.location.host);
+	console.log(window.location.hostname);
+	console.log(window.location.port);
+	console.log(window.location.protocol);
+	console.log(window.location.href);
+	console.log(window.location.pathname);
+	window.location.href="http://www.baidu.com";
+//	window.location.assign("http://www.baidu.com");
+}
+info();
