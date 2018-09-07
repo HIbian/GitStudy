@@ -150,4 +150,77 @@ create table score(
 );
 -- 第二种添加方式
 ALTER TABLE score ADD CONSTRAINT fk_stu_score FOREIGN KEY(sid) REFERENCES stu(id);
+
+-- 存储过程
+SET @age=18;
+-- 创建存储过程
+CREATE PROCEDURE INtest(in age INT)
+BEGIN
+SELECT age;
+SET age =100;
+SELECT age;
+END;
+-- 调用存储过程
+CALL INtest(@age);
+SELECT @age;
+-- 删除存储过程
+DROP PROCEDURE INtest;
+-- ----------------------------------
+SET @age=18;
+SELECT @age;-- 18
+
+CREATE PROCEDURE outtest(OUT age INT)
+BEGIN
+SELECT age;-- 值为null
+SET age=30;-- 需要赋初值，否则为空
+SELECT age;-- 30
+END;
+
+CALL outtest(@age);
+SELECT @age;-- 30
+
+DROP PROCEDURE outtest;
+-- -----------------------------------
+SET @age=20;
+SELECT @age;-- 20
+
+CREATE PROCEDURE inouttest(INOUT age int)
+BEGIN
+SELECT age;-- 20
+SET age=333;
+SELECT age;-- 333
+END;
+
+CALL inouttest(@age);
+SELECT @age;-- 333
+
+DROP PROCEDURE inouttest;
+-- 分页显示数据 1-------------------
+CREATE PROCEDURE Fenye(in rs INT,in rows INT)
+BEGIN
+	DECLARE n INT;
+	SET n=0;
+	WHILE n<rows DO
+					SELECT * FROM student LIMIT n,rs;
+					SET n=n+rs;
+		END WHILE;
+END;
+
+SET @rs=5;
+SET @rows =6;
+CALL Fenye(@rs,@rows);
+
+DROP PROCEDURE Fenye;
+-- 分页显示数据 2--------------------
+CREATE PROCEDURE getpage(in cur_index INT,in page_size INT)
+BEGIN
+	DECLARE current_index INT;
+	SET current_index = cur_index*page_size;
+	SELECT * FROM student LIMIT current_index,page_size;
+END;
+
+CALL getpage(1,4);
+
+DROP PROCEDURE getpage;
+
 ```
