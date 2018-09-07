@@ -32,7 +32,7 @@ public class DmzjProcessor implements PageProcessor {
         System.out.println("content: "+ content);
         System.out.println("url:  "+ url);
         System.out.println("contentdetail: "+ contentdetail);
-}
+    }
     public static void main(String[] args) {
         int username = 10;
         DmzjProcessor my = new DmzjProcessor();
