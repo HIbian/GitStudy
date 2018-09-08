@@ -3,47 +3,39 @@ package jdbc.study;
 import java.sql.Connection;
 import java.sql.Driver;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.sql.Statement;
 
-public class StatementStudy {
+public class PreparedStatmentStudy {
 	public static void main(String[] args) {
-		//获取数据库链接
 		Connection conn = getConection();
-		//创建Statement对象
-		Statement statement=null;
-		try {
-			statement = conn.createStatement();
-		} catch (SQLException e1) {
-			e1.printStackTrace();
-		}
-		boolean is=false;
-		
-		//execute
-		 try {
-			is = statement.execute("select * from student");
-		} catch (SQLException e1) {
-			e1.printStackTrace();
-		}
-		System.out.println("返回结果是否有ResultSet:"+is);
-		//executeUpdate
+		PreparedStatement pstmt = null;
 		int count =0;
 		try {
-			count = statement.executeUpdate("insert into student values(13,'子昂',17,'男')");
-		} catch (SQLException e1) {
-			e1.printStackTrace();
+			//注意使用英文逗号，不然会提示Parameter index out of range (1 > number of parameters, which is 0).
+			String sql = "Insert into student values (?,?,?,?)";
+			pstmt = conn.prepareStatement(sql);
+			//设置问号的值，下表从1开始
+			pstmt.setInt(1, 255);
+			pstmt.setString(2, "陈子");
+			pstmt.setInt(3, 26);
+			pstmt.setString(4, "男");
+			//执行语句，返回影响行数
+			count = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
-		System.out.println("返回影响的行数:"+count);
+		System.out.println("影响的行数："+count);
+		//关闭
 		try {
-			//关闭Statement对象
-			statement.close();
-			//关闭数据库链接
+			pstmt.close();
 			conn.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		
+		
 	}
-	
 	//链接数据库
 	public static Connection getConection() {
 		//注册驱动1

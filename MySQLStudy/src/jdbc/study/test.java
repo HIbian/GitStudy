@@ -1,39 +1,49 @@
 package jdbc.study;
 
+
 import java.sql.Connection;
 import java.sql.Driver;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class StatementStudy {
+public class test {
 	public static void main(String[] args) {
 		//获取数据库链接
 		Connection conn = getConection();
 		//创建Statement对象
 		Statement statement=null;
+
+		//executeUpdate
+		ResultSet resultSet = null;
 		try {
 			statement = conn.createStatement();
+			resultSet = statement.executeQuery("select * from student");
+			int clounm = resultSet.getMetaData().getColumnCount();
+			for (int i = 1; i <= clounm; i++) {
+				System.out.println(resultSet.getMetaData().getColumnName(i));
+			}
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 		}
-		boolean is=false;
 		
-		//execute
-		 try {
-			is = statement.execute("select * from student");
-		} catch (SQLException e1) {
-			e1.printStackTrace();
-		}
-		System.out.println("返回结果是否有ResultSet:"+is);
-		//executeUpdate
-		int count =0;
-		try {
-			count = statement.executeUpdate("insert into student values(13,'子昂',17,'男')");
-		} catch (SQLException e1) {
-			e1.printStackTrace();
-		}
-		System.out.println("返回影响的行数:"+count);
 		try {
 			//关闭Statement对象
 			statement.close();
@@ -46,12 +56,6 @@ public class StatementStudy {
 	
 	//链接数据库
 	public static Connection getConection() {
-		//注册驱动1
-		try {
-			Class.forName("com.mysql.jdbc.Driver");
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		}
 		//注册驱动2
 		try {
 			Driver myDriver = new com.mysql.jdbc.Driver();
@@ -70,11 +74,6 @@ public class StatementStudy {
 			e.printStackTrace();
 		}
 		return conn;
-//		//关闭
-//		try {
-//			conn.close();
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//		}
 	}
 }
+
