@@ -8,7 +8,7 @@ import us.codecraft.webmagic.processor.PageProcessor;
 
 public class test01 implements PageProcessor {
 
-    private Site site = Site.me().setRetryTimes(3).setSleepTime(100);
+    private Site site = Site.me().setRetryTimes(3).setSleepTime(100).setUserAgent("Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/31.0.1650.63 Safari/537.36");
 
     public void process(Page page) {
     	//继续请求的地址
