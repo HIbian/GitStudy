@@ -11,7 +11,7 @@ public class test01 implements PageProcessor {
     private Site site = Site.me().setRetryTimes(3).setSleepTime(100);
 
     public void process(Page page) {
-    	
+    	//继续请求的地址
         page.addTargetRequests(page.getHtml().links().regex("(https://github\\.com/\\w+/\\w+)").all());
         page.putField("author", page.getUrl().regex("https://github\\.com/(\\w+)/.*").toString());
         page.putField("name", page.getHtml().xpath("//h1[@class='entry-title public']/strong/a/text()").toString());
@@ -21,7 +21,8 @@ public class test01 implements PageProcessor {
         }
         page.putField("readme", page.getHtml().xpath("//div[@id='readme']/tidyText()"));
     }
-
+    
+    //返回站点设置
     public Site getSite() {
         return site;
     }
