@@ -26,5 +26,7 @@
 	<classpathentry kind="lib" path="lib/webmagic-core-0.7.3.jar" sourcepath="F:/SOURCECODE/download.zip"/>
 	<classpathentry kind="lib" path="lib/webmagic-extension-0.7.3.jar"/>
 	<classpathentry kind="lib" path="lib/xsoup-0.3.1.jar"/>
+	<classpathentry kind="lib" path="lib/gson-1.6.jar"/>
+	<classpathentry kind="lib" path="lib/mysql-connector-java-5.1.16-bin.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
