@@ -5,9 +5,9 @@ import java.util.regex.Pattern;
 
 public class java正则表达式训练 {
 	public static void main(String[] args) {
-		String str = "416711267";
+		String str = "1-2";
 		//正则表达式字符串
-		String pattrn ="\\d+";
+		String pattrn ="[1-5]-[1-7]";
 		//编译正则表达式
 		Pattern p1 = Pattern.compile(pattrn);
 		//进行配对，返回一个matcer
