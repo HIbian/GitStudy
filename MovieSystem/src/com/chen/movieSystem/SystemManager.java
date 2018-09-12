@@ -10,6 +10,7 @@ public class SystemManager {
 	movieDao md = new movieDao();
 	public void runManager() {
 		boolean go_on = true;
+		@SuppressWarnings("resource")
 		Scanner sc = new Scanner(System.in);
 		while (go_on) {
 			System.out.println("===========管理员界面==========");
