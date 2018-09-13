@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<stus>
+	<stu id="1">
+		<name>cxx</name>
+		<age>18</age>
+		<sex>man</sex>
+		<hight>1.1</hight>
+	</stu>
+	<stu id="2">
+		<name>cxx</name>
+		<age>19</age>
+		<sex>woman</sex>
+		<hight>1.2</hight>
+	</stu>
+	<stu id="3">
+		<name>cx</name>
+		<age>20</age>
+		<sex>man</sex>
+		
+	</stu>
+</stus>
