@@ -1,33 +1,76 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd" id="WebApp_ID" version="4.0">
   <display-name>WebPronjectOne</display-name>
-  <!-- 在tomcat服务器中运行时，如果不指定访问文件名，则使用一下默认文件名访问 -->
+  <filter>
+    <filter-name>EncodingFilter</filter-name>
+    <filter-class>com.filter.EncodingFilter</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>EncodingFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
   <welcome-file-list>
     <welcome-file>index.jsp</welcome-file>
     <welcome-file>default.html</welcome-file>
     <welcome-file>default.htm</welcome-file>
     <welcome-file>default.jsp</welcome-file>
   </welcome-file-list>
-  <!-- 创建Sevlet映射关系 -->
   <servlet>
-  	<servlet-name>testservlet2</servlet-name>
-  	<servlet-class>com.test.serverlet.testservlet2</servlet-class>
+    <servlet-name>testservlet2</servlet-name>
+    <servlet-class>com.test.serverlet.testservlet2</servlet-class>
   </servlet>
   <servlet-mapping>
- 	<!-- 一个servlet可以有多个servlet-mapping -->
- 	<servlet-name>testservlet2</servlet-name>
- 	<!-- 访问路径 -->
- 	<url-pattern>/testservlet2</url-pattern>
+    <servlet-name>testservlet2</servlet-name>
+    <url-pattern>/testservlet2</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>Test</servlet-name>
+    <servlet-class>com.test.serverlet.Test</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>Test</servlet-name>
+    <url-pattern>/Test</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>DengluServlet</servlet-name>
+    <servlet-class>com.test.serverlet.DengluServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>DengluServlet</servlet-name>
+    <url-pattern>/DengluServlet</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>ZhuceServlet</servlet-name>
+    <servlet-class>com.test.serverlet.ZhuceServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ZhuceServlet</servlet-name>
+    <url-pattern>/ZhuceServlet</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>showAllServlet</servlet-name>
+    <servlet-class>com.test.serverlet.showAllServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>showAllServlet</servlet-name>
+    <url-pattern>/showAllServlet</url-pattern>
   </servlet-mapping>
   
-  <servlet>
-  	<servlet-name>Test</servlet-name>
-  	<servlet-class>com.test.serverlet.Test</servlet-class>
+   <servlet>
+    <servlet-name>DeleteServlet</servlet-name>
+    <servlet-class>com.test.serverlet.DeleteServlet</servlet-class>
   </servlet>
   <servlet-mapping>
-  	<!-- 一个servlet可以有多个servlet-mapping -->
-  	<servlet-name>Test</servlet-name>
-  	<!-- 访问路径 -->
-  	<url-pattern>/Test</url-pattern>
+    <servlet-name>DeleteServlet</servlet-name>
+    <url-pattern>/DeleteServlet</url-pattern>
+  </servlet-mapping>
+  
+     <servlet>
+    <servlet-name>UpdateServlet</servlet-name>
+    <servlet-class>com.test.serverlet.UpdateServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>UpdateServlet</servlet-name>
+    <url-pattern>/UpdateServlet</url-pattern>
   </servlet-mapping>
 </web-app>

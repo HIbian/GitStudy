@@ -1,6 +1,7 @@
 package com.test.serverlet;
 
 import java.io.IOException;
+import java.util.Enumeration;
 
 import javax.servlet.Servlet;
 import javax.servlet.ServletConfig;
@@ -32,6 +33,13 @@ public class Test implements Servlet {
 	@Override
 	public void service(ServletRequest req, ServletResponse res) throws ServletException, IOException {
 		System.out.println("执行主方法体service()...");
+		Enumeration<String> parameterNames = req.getParameterNames();
+		while (parameterNames.hasMoreElements()) {
+			String  pname = parameterNames.nextElement();
+			String[] value = req.getParameterValues(pname);
+			System.out.println(value[0]+"\n");
+		}
+		
 	}
 	
 	@Override
