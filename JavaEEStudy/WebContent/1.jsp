@@ -7,6 +7,7 @@
 <title>Insert title here</title>
 </head>
 <body>
-1.jsp
+${xiaoxi}
+<a href="showall.do">显示所有用户</a>
 </body>
 </html>
