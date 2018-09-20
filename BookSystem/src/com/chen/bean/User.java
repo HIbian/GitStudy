@@ -8,6 +8,11 @@ public class User {
 	private String birthday ;
 	private String email;
 	
+	@Override
+	public String toString() {
+		return "User [id=" + id + ", username=" + username + ", password=" + password + ", sex=" + sex + ", birthday="
+				+ birthday + ", email=" + email + "]";
+	}
 	public User(String username, String password, int sex, String birthday, String email) {
 		super();
 		this.username = username;

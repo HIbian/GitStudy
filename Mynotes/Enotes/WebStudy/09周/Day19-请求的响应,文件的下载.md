@@ -1,3 +1,136 @@
+# 请求和响应,文件的下载
+## 请求参数封装
+导包
+![](img/10.png)
+```html
+<form action="UserServlet.do?action=register" method="post">
+用户名：<input type="text" name="username" ><br/>
+密码：<input type="password" name="password" ><br/>
+性别：<input type="radio" name="sex" value="1" checked="checked">男
+	  <input type="radio" name="sex" value="2">女<br/>
+生日：<input type="text" name="birthday" ><br/>
+email：<input type="text" name="email" ><br/>
+<input type="submit" value="提交">&nbsp;
+<input type="reset" value="重置">
+```
+```java
+User u = new User();
+try {
+	//将表单中的数据封装到User对象属性中去，属性名需要的相应的表单name相同
+	BeanUtils.populate(u, request.getParameterMap());
+	System.out.println(u);
+} catch (IllegalAccessException | InvocationTargetException e) {
+	e.printStackTrace();
+}
+//User属性
+public class User {
+	private int id;
+	private String username;
+	private String password;
+	private int sex;
+	private String birthday ;
+	private String email;
+  ...
+}
+```
+## 注解式实现文件上传
+* 表单一定是**POST请求**
+* 表单设置属性：**`enctype="multipart/form-data"`**
+* 注解`@MultipartConfig`
+* 图片写入硬盘需要绝对路径
+  * `req.getServletContext().getRealPath("");`
+* 图片写入mysql需要相对路径
+  * `filename = "photos/"+new SimpleDateFormat("yy-MM-dd").format(Calendar.getInstance().getTime())+"/"+file;`
+* 根据时间在photo下生成目录
+* 根据时间重命名图片名
+
+
+```html
+<!-- type="file",method="post",enctype="multipart/form-data"-->
+<form action="BookServlet.do?action=addbook" method="post" enctype="multipart/form-data">
+书名：<input type="text" name="bname"><br/>
+作者：<input type="text" name="bauthor"><br/>
+价格：<input type="text" name="bprice"><br/>
+出版日期：<input type="text" name="bdate" onfocus="WdatePicker({isShowClear:true,readOnly:true,skin:'blue'})"><br/>
+图片：<input type="file" name="bimage"><br/>
+是否上架：<input type="radio" name="bisonline" value="1">是<input type="radio" name="bisonline" value="0">否<br/>
+<input type="submit" value="提交">
+```
+
+```java
+private void book_add(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+		//上传图片
+		String filename = req.getParameter("bimage");
+
+		try {
+			Collection<Part> parts = req.getParts();
+			for (Part p : parts) {
+				String header = p.getHeader("content-disposition");
+//						header
+//						form-data; name="bname"
+//						form-data; name="bauthor"
+//						form-data; name="bprice"
+//						form-data; name="bdate"
+//						form-data; name="bimage"; filename="1.jpg"
+//						form-data; name="bisonline"
+				//找到图片文件
+				if(header.contains("bimage")) {
+					//从header中获取文件名
+					String file = getFilenameByHeader(header);
+					//创建目录
+					File filedir = creatDir(req.getServletContext());
+					//根据时间更新文件名
+					file = newFilename(file);
+
+					//完整文件
+					File fileintodir = new File(filedir, file);
+					System.out.println(fileintodir.getAbsolutePath());
+					//将文件存入
+					p.write(fileintodir.getAbsolutePath());
+					//存入数据库为相对路径
+					filename = "photos/"+new SimpleDateFormat("yy-MM-dd").format(Calendar.getInstance().getTime())+"/"+file;
+					System.out.println(filename);
+				}
+			}
+		} catch (ServletException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		int count = bs.addbook(new Books(req.getParameter("bname"), req.getParameter("bauthor"), Double.parseDouble(req.getParameter("bprice")), req.getParameter("bdate"), filename, Integer.parseInt(req.getParameter("bisonline"))));
+		if (count==1) {
+			//添加成功->showall
+			resp.sendRedirect("BookServlet.do?action=showall");
+		}else {
+			//添加失败->添加界面
+			resp.sendRedirect("AddBook.jsp");
+		}
+	}
+  	//根据时间更新文件名
+	private String newFilename(String file) {
+		return  new SimpleDateFormat("yyMMddhhmmss_").format(Calendar.getInstance().getTime())+file;
+	}
+	//创建一天一个的目录
+	private File creatDir(ServletContext context) {
+		String realPath = context.getRealPath("/photos");
+		String date = new SimpleDateFormat("yy-MM-dd").format(Calendar.getInstance().getTime());
+		File dir = new File(realPath, date);
+		if (!dir.exists()) {
+			dir.mkdirs();
+		}
+		return dir;
+	}
+	private String getFilenameByHeader(String header) {
+		//form-data; name="bimage"; filename="1.jpg"
+		String[] arrys = header.split(";");//用;分割
+		String filename = arrys[arrys.length-1];//最后一段filename="1.jpg"
+		int start = filename.indexOf("\"");
+		int end = filename.lastIndexOf("\"");
+		return filename = filename.substring(start+1, end);//1.jpg
+	}
+```
+## 注解实现修改图片
+
+```java
 package com.chen.controller;
 
 import java.io.File;
@@ -23,7 +156,7 @@ import com.chen.servce.bookservceimpl;
 @MultipartConfig
 public class BookServlet extends HttpServlet{
 	private static final long serialVersionUID = 1L;
-	
+
 	bookservce bs = new bookservceimpl();
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -62,7 +195,7 @@ public class BookServlet extends HttpServlet{
 					File filedir = creatDir(req.getServletContext());//G:\Javaee1805\apache-tomcat-9.0.12\wtpwebapps\BookSystem\photos\18-09-20
 					//根据时间更新文件名
 					file = newFilename(file);//180920050440_1.jpg
-					
+
 					//完整文件路径
 					//G:\Javaee1805\apache-tomcat-9.0.12\wtpwebapps\BookSystem\photos\18-09-20\180920050440_1.jp
 					File fileintodir = new File(filedir, file);
@@ -73,7 +206,7 @@ public class BookServlet extends HttpServlet{
 					filename = "photos/"+new SimpleDateFormat("yy-MM-dd").format(Calendar.getInstance().getTime())+"/"+file;
 				}
 			}
-	
+
 			int count = bs.updatebook(new Books(Integer.parseInt(req.getParameter("bid")),req.getParameter("bname"), req.getParameter("bauthor"), Double.parseDouble(req.getParameter("bprice")), req.getParameter("bdate"), filename, Integer.parseInt(req.getParameter("bisonline"))));
 			if (count==1) {
 				//更新成功
@@ -107,7 +240,7 @@ public class BookServlet extends HttpServlet{
 					File filedir = creatDir(req.getServletContext());//G:\Javaee1805\apache-tomcat-9.0.12\wtpwebapps\BookSystem\photos\18-09-20
 					//根据时间更新文件名
 					file = newFilename(file);//180920050440_1.jpg
-					
+
 					//完整文件路径
 					//G:\Javaee1805\apache-tomcat-9.0.12\wtpwebapps\BookSystem\photos\18-09-20\180920050440_1.jp
 					File fileintodir = new File(filedir, file);
@@ -174,3 +307,4 @@ public class BookServlet extends HttpServlet{
 		doPost(req, resp);
 	}
 }
+```

@@ -55,7 +55,7 @@ table {
 				<td><%=b.getBauthor() %></td>
 				<td><%=b.getBprice() %></td>
 				<td><%=b.getBdate() %></td>
-				<td><%=b.getBimage() %></td>
+				<td><img src="<%=b.getBimage() %>" style="width: 80px;height: 100px"></td>
 				<td><%=b.getBisonline() %></td>
 				<td><a href="#" onclick="deletebooks(<%=b.getBid() %>);">删除</a>
 					<a href="#" onclick="update(<%=b.getBid() %>)">修改</a>

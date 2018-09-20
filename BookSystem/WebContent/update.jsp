@@ -12,12 +12,12 @@
 <%
 Books book = (Books)request.getAttribute("book"); 
 %>
-<form action="BookServlet.do?action=doupdate&bid=<%=book.getBid()%>" method="post">
+<form action="BookServlet.do?action=doupdate&bid=<%=book.getBid()%>&oldbimage=<%=book.getBimage() %>" method="post" enctype="multipart/form-data">
 书名：<input type="text" name="bname" value="<%=book.getBname() %>"><br/>
 作者：<input type="text" name="bauthor" value="<%=book.getBauthor() %>"><br/>
 价格：<input type="text" name="bprice" value="<%=book.getBprice() %>"><br/>
 出版日期：<input type="text" name="bdate" onfocus="WdatePicker({isShowClear:true,readOnly:true,skin:'blue'})" value="<%=book.getBdate() %>"><br/>
-图片：<input type="text" name="bimage" value="<%=book.getBimage() %>"><br/>
+图片：<input type="file" name="bimage"><br/>
 <%
 if(book.getBisonline()==1){
 %>

@@ -1,11 +1,15 @@
 package com.chen.controller;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.apache.commons.beanutils.BeanUtils;
 
 import com.chen.bean.User;
 import com.chen.servce.userservce;
@@ -31,12 +35,15 @@ public class UserServlet extends HttpServlet {
 	}
 
 	private void user_register(HttpServletRequest request, HttpServletResponse response) throws IOException {
-		String username = request.getParameter("username");
-		String password = request.getParameter("password");
-		int sex = Integer.parseInt(request.getParameter("sex"));
-		String birthday = request.getParameter("birthday");
-		String email = request.getParameter("email");
-		int count = us.register(new User(username, password, sex, birthday, email));
+		User u = new User();
+		try {
+			//将表单中的数据封装到User对象属性中去，属性名需要的相应的表单name相同
+			BeanUtils.populate(u, request.getParameterMap());
+			System.out.println(u);
+		} catch (IllegalAccessException | InvocationTargetException e) {
+			e.printStackTrace();
+		}
+		int count = us.register(u);
 		if (count==1) {
 			//注册成功->登陆页面
 			response.getWriter().write("<script>alert('注册成功!');location.href='login.jsp'</script>");
