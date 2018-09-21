@@ -2,12 +2,15 @@ package com.chen.controller;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.net.URLEncoder;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.beanutils.BeanUtils;
 
@@ -59,9 +62,35 @@ public class UserServlet extends HttpServlet {
 		//登陆
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
+		String usercode = request.getParameter("code");
+		String ischecked = request.getParameter("rember");
+		//获取验证码
+		HttpSession session = request.getSession();
+		String code = (String)session.getAttribute("code");
 		//验证信息
-		int count = us.login(new User(username, password));
+		int count = 0;
+		if (code.equals(usercode)) {
+			count = us.login(new User(username, password));
+		}
 		if (count==1) {
+			System.out.println(ischecked);
+			if ("1".equals(ischecked)) {
+				//记住密码
+				Cookie loginfo_username = new Cookie("loginfo_username", URLEncoder.encode(username, "utf-8"));
+				loginfo_username.setMaxAge(300);
+				Cookie loginfo_password = new Cookie("loginfo_password", URLEncoder.encode(password, "utf-8"));
+				loginfo_password.setMaxAge(300);
+				response.addCookie(loginfo_username);
+				response.addCookie(loginfo_password);
+			}else{
+				//清楚Cookie,设置时间为0
+				Cookie loginfo_username = new Cookie("loginfo_username", URLEncoder.encode(username, "utf-8"));
+				loginfo_username.setMaxAge(0);
+				Cookie loginfo_password = new Cookie("loginfo_password", URLEncoder.encode(password, "utf-8"));
+				loginfo_password.setMaxAge(0);
+				response.addCookie(loginfo_username);
+				response.addCookie(loginfo_password);
+			}
 			//登陆成功，跳转至显示图书界面
 			response.sendRedirect("BookServlet.do?action=showall");
 		}else {

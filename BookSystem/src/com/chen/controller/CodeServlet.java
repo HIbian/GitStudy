@@ -13,6 +13,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 @WebServlet("/CodeServlet.do")
 public class CodeServlet extends HttpServlet {
@@ -66,7 +67,10 @@ public class CodeServlet extends HttpServlet {
 			int y2 = r.nextInt(height);
 			g.drawLine(x1, y1, x2, y2);
 		}
-		
+		//获取session
+		HttpSession session = request.getSession();
+		//将验证码加入session中
+		session.setAttribute("code", sb.toString());
 		//输出验证图片
 		ImageIO.write(img, "jpg", response.getOutputStream());
 		response.setContentType("image/jpeg");
