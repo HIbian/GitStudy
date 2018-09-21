@@ -308,3 +308,5 @@ public class BookServlet extends HttpServlet{
 	}
 }
 ```
+
+## 生成验证码
