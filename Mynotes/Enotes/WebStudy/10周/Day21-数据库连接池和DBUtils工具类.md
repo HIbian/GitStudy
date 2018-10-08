@@ -36,7 +36,7 @@ public class BDCPtest {
 		try {
 			return dataSource.getConnection();
 		} catch (SQLException e) {
-			e.printStackTrace();
+			e.printStackTrace();eeeeeeeeeeeeeeeee
 		}
 		return null;
 	}
