@@ -8,7 +8,6 @@ import java.sql.Statement;
 public class test {
 	public static void main(String[] args) throws Exception{
 		c3p0();
-		
 	}
 
 	private static void c3p0() throws SQLException {
