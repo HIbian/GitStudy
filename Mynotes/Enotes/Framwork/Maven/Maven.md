@@ -66,5 +66,90 @@ pom.xml---------------Maven配置文(**重要**)
   * goals中输入compile
 * 运行
   * run as->javaapplet
+* 安装
+  * run as->maven install
+  * **安装后可以在其他maven项目中的pom.xml中引用**
 
-## TODO
+## Maven坐标
+* gav
+  * groupid 公司域名倒叙
+  * artfactid 项目名称/项目模块名称
+  * version 版本
+```xml
+  <dependency>
+      <groupId>com.alibaba</groupId>
+      <artifactId>fastjson</artifactId>
+      <version>1.2.51</version>
+  </dependency>
+```
+
+## Maven的web工程
+
+![](img/1.png)
+
+* 添加JavaEE环境
+  * Maven的web项目中没有自带JavaEE环境 ，因此在创建servlet和jsp时会出错
+  * 解决方式：
+  * 方式一： 把 tomcat添加到项目的buildpath中
+  * 方式二： 添加servlet和jsp的依赖
+    ```xml
+     <dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>servlet-api</artifactId>
+			<version>2.5</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>jsp-api</artifactId>
+			<version>2.0</version>
+			<scope>provided</scope>
+		</dependency>
+    ```
+
+## 设置Maven中jdk版本
+
+```xml
+<plugins>
+			<plugin>
+				<artifactId>maven-war-plugin</artifactId>
+				<configuration>
+					<version>3.1</version>
+				</configuration>
+			</plugin>
+			<!-- java编译插件 -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.3.2</version>
+				<configuration>
+					<source>1.7</source>
+					<target>1.7</target>
+					<encoding>UTF-8</encoding>
+				</configuration>
+			</plugin>
+		</plugins>
+```
+
+## 更改Maven下载源
+* 默认仓库下载很慢，可以使用阿里的仓库
+* 方法一：在pom文件中添加
+  ```xml
+   <!-- 从Maven中央仓库下载东西速度慢，可能导致下载失败，在 这里配置阿里的镜像，从阿里下载-->
+   <repositories>
+  	<repository>
+  		<id>alimaven</id>
+  		<name>aliyun maven</name>
+  		<url>http://maven.aliyun.com/nexus/content/groups/public/</url>
+  	</repository>
+  </repositories>
+  ```
+* 方法二：修改maven的setting.xml文件,在`<mirrors>标签中添加
+  ```xml
+    <mirror>
+      <id>alimaven</id>
+      <name>aliyun maven</name>
+      <url>http://maven.aliyun.com/nexus/content/groups/public/</url>
+      <mirrorOf>central</mirrorOf>
+    </mirror>
+  ```
