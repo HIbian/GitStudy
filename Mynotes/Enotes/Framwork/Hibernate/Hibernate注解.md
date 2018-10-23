@@ -35,3 +35,9 @@ public class User {
 * AUTO：自动选择一个最适合底层数据库的主键生成策略。这个是默认选项，即如果只写@GeneratedValue，等价于@GeneratedValue(strategy=GenerationType.AUTO)。
 
 ## 关联关系
+
+### 一对多
+
+### 多对多
+
+### 一对一
