@@ -24,8 +24,13 @@
 		- [spel注入](#spel注入)
 		- [复杂类型注入](#复杂类型注入)
 	- [Spring注解](#spring注解)
+		- [自动装配@Autowired](#自动装配autowired)
+		- [初始化和销毁](#初始化和销毁)
+		- [使用spring注解配置WebMVCDemo](#使用spring注解配置webmvcdemo)
+	- [Spring整合JUnit测试](#spring整合junit测试)
 
 <!-- /TOC -->
+
 # Spring基础
 
 ## Rod Johnson
@@ -529,5 +534,102 @@ public void test1(){
     AnTest antest = context.getBean("antest", AnTest.class);
     System.out.println(antest.toString());
     context.close();
+}
+```
+
+### 自动装配@Autowired
+
+* 根据**类型**自动装配TYPE
+	* 自动找到**对应类或者实现类，子类**
+	* 万一有**多个类型都匹配**，会报错
+		* 需要添加`@Qualifief("")`
+			* 根据名字查找
+
+* `@Resource("")==@Autowired+@Qualifief("")`使用一个注解替代
+
+### 初始化和销毁
+
+* `@PostConstruct`配置初始化方法
+* `@preDestroy`配置销毁方法
+
+### 使用spring注解配置WebMVCDemo
+
+* dao层`@Repository`
+* servce层`@Servce`
+* controller层`@Controller`
+
+**相关代码**
+```java
+// <bean id="dao" class="com.bruce.dao.impl.UserDaoImpl"/>
+@Repository
+public class UserDaoImpl implements UserDao {
+	@Override
+	public List<User> getUsers() {
+		List<User> list = new ArrayList<User>();// 模拟查询到数据集合
+		list.add(new User(1, "小红", 15));
+		list.add(new User(2, "小兰", 13));
+		list.add(new User(3, "小白", 17));
+		list.add(new User(4, "小黑", 19));
+		return list;
+	}
+}
+
+// <bean id="service" class="com.bruce.service.impl.UserServiceImpl">
+//    <property name="userDao" ref="dao"/>
+// </bean>
+@Service
+public class UserServiceImpl implements UserService {
+	@Autowired  //在容器中找一个dao的对象 注入进来
+	UserDao userDao=null; //框架启动的时候 自动给 userDao注入的了对象
+	@Override
+	public List<User> getUsers() {
+		return userDao.getUsers();
+	}
+}
+
+//如果不指定对象名  那么就是类名首个单词小写
+@Controller("userServlet")
+public class UserServlet {
+	//从容器中寻找一个对象注入给UserService接口
+	@Autowired
+	UserService userService;
+	public List<User> show(){
+		return userService.getUsers();
+	}
+	public void setUserService(UserService userService) {
+		this.userService = userService;
+	}
+}
+```
+
+## Spring整合JUnit测试
+
+```xml
+<dependency>
+	<groupId>org.springframework</groupId>
+	<artifactId>spring-test</artifactId>
+	<version>4.3.8.RELEASE</version>
+</dependency>
+
+<dependency>
+	<groupId>junit</groupId>
+	<artifactId>junit</artifactId>
+	<version>4.12</version>
+</dependency>
+```
+
+```java
+//创建容器
+@RunWith(SpringJUnit4ClassRunner.class)
+// 指定创建容器时使用哪个配置文件
+@ContextConfiguration("classpath:applicationContext.xml")
+public class RunWithTest {
+	// 将名为user的对象注入到u变量中
+	@Autowired
+	private Person p;
+	@Test
+	public void testCreatePerson() {
+		System.out.println(p);
+	}
 }
 ```
