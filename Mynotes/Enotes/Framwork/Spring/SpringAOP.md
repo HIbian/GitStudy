@@ -361,3 +361,147 @@ end t ==>
     <version>1.4</version>
 </dependency>
 ```
+
+* SpringXml文件
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/aop
+       http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+    <!--target-->
+    <bean name="userServce" class="com.servceimp.UserServceimpl"/>
+    <!--advice-->
+    <bean name="mytran" class="com.advice.Mytran"/>
+    <!--advice weaving target-->
+    <aop:config>
+        <aop:pointcut id="us" expression="execution(* com.servceimp.UserServceimpl.*(..))"/>
+        <aop:aspect ref="mytran">
+            <aop:before method="start" pointcut-ref="us"/>
+            <aop:after method="end" pointcut-ref="us"/>
+            <aop:after-throwing method="excp" pointcut-ref="us"/>
+            <aop:after-returning method="afterreturn" pointcut-ref="us"/>
+        </aop:aspect>
+    </aop:config>
+</beans>
+```
+
+* User.java
+
+```java
+package com.bean;
+
+public class User {
+    private Integer id;
+    private String user;
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", user='" + user + '\'' +
+                '}';
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getUser() {
+        return user;
+    }
+
+    public void setUser(String user) {
+        this.user = user;
+    }
+
+    public User() {
+    }
+
+    public User(Integer id, String user) {
+        this.id = id;
+        this.user = user;
+    }
+}
+```
+
+* UserServce.java
+
+```java
+package com.servce;
+
+import com.bean.User;
+
+public interface UserServce {
+    public void addUser(User user);
+    public void deleteUser(User user);
+}
+```
+
+* UserServceimpl.java
+
+```java
+package com.servceimp;
+
+import com.bean.User;
+import com.servce.UserServce;
+
+public class UserServceimpl implements UserServce {
+    public void addUser(User user) {
+//        System.out.println(1/0);
+        System.out.println("addUser()"+user.toString());
+    }
+    public void deleteUser(User user) {
+        System.out.println("deleteUser()"+user.toString());
+    }
+}
+```
+
+* Mytran.java
+
+```java
+package com.advice;
+
+public class Mytran {
+    //前置通知
+    public void start(){
+        System.out.println("====>start()");
+    }
+    //后置通知
+    public void end(){
+        System.out.println("====>end()");
+    }
+    //异常拦截通知
+    public void excp(){
+        System.out.println("====>exception");
+    }
+    //最终通知通知
+    public void afterreturn(){
+        System.out.println("====>afterreturn()");
+    }
+    //环绕通知
+}
+```
+
+* AopTest
+
+```java
+public class AopTest {
+    @Test
+    public void test1(){
+        ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("applicationContext-aop.xml");
+        UserServce us = context.getBean("userServce", UserServce.class);//接口的多太
+        us.addUser(new User(1,"cx"));
+        us.deleteUser(new User(1,"cx"));
+    }
+}
+```
