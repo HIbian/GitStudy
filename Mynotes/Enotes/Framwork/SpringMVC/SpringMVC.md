@@ -178,6 +178,15 @@
 </beans>
 ```
 
+## SpringMVC注解
+* @RequestMapping
+  * 作用：SpringMVC使用@RequestMapping注解为控制器指定可以处理哪些URL请求。DispatcherServlet 截获请求后，就通过控制器上 @RequestMapping 提供的映射信息确定请求所对应的处理方法。
+  * 方法和类上都可以使用@RequestMapping
+    * Value属性：方法被访问的具体路劲
+      * eg
+
+
+
 ## Demo
 
 ```java
