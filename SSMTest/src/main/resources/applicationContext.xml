@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context-4.0.xsd
+       http://www.springframework.org/schema/aop
+       http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+       http://www.springframework.org/schema/tx
+       http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+	   http://www.springframework.org/schema/util
+	   http://www.springframework.org/schema/util/spring-util-4.0.xsd">
+
+    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <!--忽略没有找到的资源文件-->
+        <property name="ignoreResourceNotFound" value="true"/>
+        <!--配置资源文件-->
+        <property name="locations">
+            <list>
+                <value>classpath:db.properties</value>
+            </list>
+        </property>
+    </bean>
+
+    <!--1.扫描包-->
+    <context:component-scan base-package="com.hibian.*"/>
+
+    <!--2.配置数据源c3p0-->
+    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
+          destroy-method="close">
+        <property name="driverClass" value="${jdbc.driverClassName}"/>
+        <property name="jdbcUrl" value="${jdbc.url}"/>
+        <property name="user" value="${jdbc.username}"/>
+        <property name="password" value="${jdbc.password}"/>
+    </bean>
+
+    <!--3.配置MyBatis的SqlSessionFactory-->
+    <bean class="com.baomidou.mybatisplus.spring.MybatisSqlSessionFactoryBean">
+        <property name="configLocation" value="classpath:mybatis-config.xml"/>
+        <property name="dataSource" ref="dataSource"/>
+
+        <!--自动扫描mapping.xml文件-->
+        <!--<property name="mapperLocations" value="classpath:Mapper.xml"/>-->
+        <property name="typeAliasesPackage" value="com.hibian.bean"/>
+        <!--注入全局MP策略配置-->
+        <property name="globalConfig" ref="globalConfiguration"/>
+        <!-- 插件注册 -->
+        <property name="plugins">
+            <list>
+                <!-- 注册分页插件 -->
+                <bean class="com.baomidou.mybatisplus.plugins.PaginationInterceptor"/>
+                <!-- 注册执行分析插件 -->
+                <bean class="com.baomidou.mybatisplus.plugins.SqlExplainInterceptor">
+                    <property name="stopProceed" value="true"/>
+                </bean>
+                <!-- 注册性能分析插件 -->
+                <bean class="com.baomidou.mybatisplus.plugins.PerformanceInterceptor">
+                    <property name="format" value="true"/>
+                    <!-- <property name="maxTime" value="5"/> -->
+                </bean>
+            </list>
+        </property>
+    </bean>
+    <!--全局MP策略-->
+    <bean id="globalConfiguration" class="com.baomidou.mybatisplus.entity.GlobalConfiguration">
+        <property name="dbColumnUnderline" value="true"/>
+        <!--全局的主键生成策略-->
+        <property name="idType" value="0"/>
+        <!--表前缀策略配置-->
+        <property name="tablePrefix" value="t_"/>
+    </bean>
+
+
+    <!--4.定义Mapper接口的扫描器-->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="com.hibian.mapper"/>
+    </bean>
+
+    <!--5.定义事务管理器-->
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <!--6.开启事务注解支持-->
+    <tx:annotation-driven transaction-manager="transactionManager"/>
+</beans>
